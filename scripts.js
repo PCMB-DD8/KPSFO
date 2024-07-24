@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const startX = 0.1875; // starting X position for the first label
         const startY = 0.5; // starting Y position for the first label
         const xSpacing = 0.125; // horizontal space between labels
-        const ySpacing = 0.75; // vertical space between labels
+        const ySpacing = 0.10; // vertical space between labels
 
         let currentDate = new Date(startDate);
         const expirationMap = {
