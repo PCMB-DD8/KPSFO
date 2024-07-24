@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avery Label 5971 Generator</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- If using Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=YourFontName&display=swap" rel="stylesheet">
+    <!-- Include jsPDF library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="container" id="labels-container">
+        <img src="KP_logo.png" alt="Logo" id="logo">
+        <h1 id="title">KPSFO Avery Label BUD Generator</h1>
+        <div class="select-container">
+            <select id="month-select">
+                <option value="">Select Month</option>
+                <!-- Options will be added by JavaScript -->
+            </select>
+    
+            <select id="year-select">
+                <option value="">Select Year</option>
+                <!-- Options will be added by JavaScript -->
+            </select>
+    
+            <select id="expiration-select">
+                <option value="">Select Expiration</option>
+                <option value="7">7-Days</option>
+                <option value="30">30-Days</option>
+                <option value="180">6-Months</option>
+                <option value="1095">3-Years</option>
+            </select>
+        </div>
+        <button id="print-btn">Print to PDF</button>
+        <div class="table-container">
+            <table id="products-table">
+                <thead>
+                    <tr>
+                        <th>Products</th>
+                        <th>Expiration After Opening</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Sterile 70% IPA (Wipes)</td>
+                        <td>7-Days</td>
+                    </tr>
+                    <tr>
+                        <td>TB1-3300 (Wipes)</td>
+                        <td>7-Days</td>
+                    </tr>
+                    <tr>
+                        <td>Sterile 70% IPA (Solution)</td>
+                        <td>30-Days</td>
+                    </tr>
+                    <tr>
+                        <td>TB1-3300 (Solution)</td>
+                        <td>6-Months</td>
+                    </tr>
+                    <tr>
+                        <td>Peridox RTU (Solution)</td>
+                        <td>6-Months</td>
+                    </tr>
+                    <tr>
+                        <td>Pre-Empt (Wipes & Solution)</td>
+                        <td>3-Years</td>
+                    </tr>
+                    <tr>
+                        <td>Pre-Empt PLUS (Wipes & Solution)</td>
+                        <td>3-Years</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script src="scripts.js"></script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+.clear {
+    clear: both;
+}
+
+#month-select, #year-select, #expiration-select, #print-btn {
+    width: 200px;
+    height: 40px;
+    margin: 10px;
+    padding: 5px;
+    font-size: 16px;
+}
+
+#month-select {
+    margin-right: 20px; /* Add space to the right of the month select */
+}
+
+#year-select, #expiration-select {
+    margin-left: 20px; /* Add space to the left of the year select and expiration select */
+}
+
+#print-btn {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+#print-btn:hover {
+    background-color: #45a049;
+}
+
+#month-select option, #year-select option, #expiration-select option {
+    padding: 5px;
+}
+
+#logo {
+    float: left;
+    width: 100%; /* Adjust as needed */
+    height: auto; /* Maintain aspect ratio */
+    max-height: 350px;
+    margin-right: 10px;
+}
+
+#title {
+    color: #0075c9; /* Example color extracted from the logo */
+    font-family: 'CustomFont', Arial, sans-serif; /* Replace 'CustomFont' with the actual font name */
+    font-size: 2em; /* Adjust size as needed */
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px; /* Add space between the logo and the title */
+}
+
+/* Center the fields and button */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.select-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px; /* Add space between the selects and the button */
+}
+
+/* Style the first row with a background color */
+#products-table tr:first-of-type {
+    background-color: #f2f2f2; /* Light gray background for the first row */
+}
+
+/* Container for centering the table and adding padding */
+.table-container {
+    padding: 0 20px; /* Adjust padding as needed */
+    margin-top: 20px; /* Space above the table container */
+    display: flex;
+    justify-content: center;
+}
+/* Existing styles for the table */
+#products-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Style the first row with a background color */
+#products-table tr:first-of-type {
+    background-color: #f2f2f2; /* Light gray background for the first row */
+}
+
+/* Header styling to match the title color */
+#products-table thead th {
+    background-color: #0075c9; /* Match the color of the title */
+    color: white; /* Ensure text is visible */
+    padding: 12px 15px; /* Adjust padding for spacing */
+    text-align: left;
+}
+
+/* Add more space between columns */
+#products-table th, #products-table td {
+    padding: 12px 20px; /* Increase horizontal padding for more space */
+}
+
+/* Style the rest of the table rows */
+#products-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9; /* Alternating row colors */
+}
+
+#products-table tbody tr:hover {
+    background-color: #ddd; /* Hover effect */
+}
+
+/* Remove background color from the header */
+#products-table thead th {
+    background-color: #0075c9; /* Match the color of the title */
+    color: white; /* Ensure text is visible */
+}
+
