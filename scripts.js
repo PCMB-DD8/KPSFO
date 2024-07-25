@@ -49,8 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const leftMargin = 0.5 / 2.54;
         const rightMargin = 0.5 / 2.54;
-        const topMargin = 1.0 / 2.54;
-        const bottomMargin = 1.4 / 2.54;
+        const topMargin = 0.8 / 2.54;
+        const bottomMargin = 1.6 / 2.54;
         const interColumnMargin = 4 / 2.54;
 
         const xSpacing = (doc.internal.pageSize.width - leftMargin - rightMargin - (labelsPerRow * labelWidth)) / (labelsPerRow - 1);
