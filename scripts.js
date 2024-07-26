@@ -58,13 +58,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let currentDate = new Date(startDate);
         const expirationMap = {
-            '7': { days: 7, months: 0, years: 0 },
-            '30': { days: 30, months: 0, years: 0 },
-            '180': { days: 0, months: 6, years: 0 },
-            '1095': { days: 0, months: 0, years: 3 }
+            '7': { days: 7, months: 0, years: 0, text: '7-Days' },
+            '30': { days: 30, months: 0, years: 0, text: '30-Days' },
+            '180': { days: 0, months: 6, years: 0, text: '6-Months' },
+            '1095': { days: 0, months: 0, years: 3, text: '3-Years' }
         };
 
-        const { days, months, years } = expirationMap[expirationType] || { days: 0, months: 0, years: 0 };
+        const { days, months, years, text: expirationText } = expirationMap[expirationType] || { days: 0, months: 0, years: 0, text: '' };
 
         while (currentDate <= endDate) {
             if (currentDate.getDate() > 1) {
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const x = leftMargin + col * (labelWidth + xSpacing) + (labelWidth / 2);
                     const y = topMargin + row * (labelHeight + ySpacing) + (labelHeight / 2);
 
-                    const openedOn = formatDate(currentDate);
+                    const dispensedOn = formatDate(currentDate);
                     const expirationDate = new Date(currentDate);
 
                     if (days > 0) {
@@ -87,10 +87,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         expirationDate.setFullYear(currentDate.getFullYear() + years);
                     }
 
-                    const expiredOn = formatDate(expirationDate);
+                    const expiresOn = formatDate(expirationDate);
 
-                    doc.text(`Opened on ${openedOn}`, x, y, { align: 'center' });
-                    doc.text(`Expired on ${expiredOn}`, x, y + 0.4, { align: 'center' });
+                    doc.text(`Dispensed ${dispensedOn}`, x, y, { align: 'center' });
+                    doc.text(`Exp (${expirationText}) ${expiresOn}`, x, y + 0.4, { align: 'center' });
                 }
             }
 
