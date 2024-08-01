@@ -45,27 +45,27 @@ document.addEventListener('DOMContentLoaded', () => {
         const labelWidth = 2.625;
         const labelHeight = 1;
         const labelsPerRow = 3;
-        const labelsPerColumn = 10; // Adjusted to 10 columns
+        const labelsPerColumn = 9; // Adjusted to 9 columns
         const labelsPerPage = labelsPerRow * labelsPerColumn; // Total labels per page
 
-        const leftMargin = 0.5906; // 1.5 cm in inches
-        const rightMargin = 0.5906; // 1.5 cm in inches
-        const topMargin = 0.7874; // 2 cm in inches
-        const bottomMargin = 1.6;
+        const leftMargin = 0.4;
+        const rightMargin = 0.4;
+        const topMargin = 1.0;
+        const bottomMargin = 1.3;
 
-        const xSpacing = 1.50;
-        const ySpacing = 0.20;
+        const xSpacing = (doc.internal.pageSize.width - leftMargin - rightMargin - (labelsPerRow * labelWidth)) / (labelsPerRow - 1);
+        const ySpacing = (doc.internal.pageSize.height - topMargin - bottomMargin - (labelsPerColumn * labelHeight)) / (labelsPerColumn - 1);
 
         let currentDate = new Date(startDate);
 
         const expirationMap = {
-            '7': { days: 7, months: 0, years: 0, text: '7-Days', cellsPerDate: 9 },
-            '30': { days: 30, months: 0, years: 0, text: '30-Days', cellsPerDate: 3 },
-            '180': { days: 0, months: 6, years: 0, text: '6-Months', cellsPerDate: 3 },
-            '1095': { days: 0, months: 0, years: 3, text: '3-Years', cellsPerDate: 3 }
+            '7': { days: 7, months: 0, years: 0, text: '7-Days', cellsPerBlock: 9 },
+            '30': { days: 30, months: 0, years: 0, text: '30-Days', cellsPerBlock: 3 },
+            '180': { days: 0, months: 6, years: 0, text: '6-Months', cellsPerBlock: 3 },
+            '1095': { days: 0, months: 0, years: 3, text: '3-Years', cellsPerBlock: 3 }
         };
 
-        const { days, months, years, text: expirationText, cellsPerDate } = expirationMap[expirationType] || { days: 0, months: 0, years: 0, text: '', cellsPerDate: 3 };
+        const { days, months, years, text: expirationText, cellsPerBlock } = expirationMap[expirationType] || { days: 0, months: 0, years: 0, text: '', cellsPerBlock: 3 };
 
         let rowCount = 0;
         let labelCount = 0;
@@ -111,8 +111,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 rowCount++;
             }
 
-            // Change date after 'cellsPerDate' cells
-            if (labelsForCurrentDate >= cellsPerDate) {
+            // Change date after 9 cells for '7-Days' or 3 cells for others
+            if (labelsForCurrentDate >= cellsPerBlock) {
                 labelsForCurrentDate = 0;
                 currentDate.setDate(currentDate.getDate() + 1);
             }
