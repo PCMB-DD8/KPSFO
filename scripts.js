@@ -29,8 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const month = monthSelect.value;
-        const year = yearSelect.value;
+        const month = parseInt(monthSelect.value);
+        const year = parseInt(yearSelect.value);
         const expirationType = expirationSelect.value;
 
         if (!month || !year || !expirationType) {
@@ -40,63 +40,82 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const startDate = new Date(year, month - 1, 1);
         const endDate = new Date(year, month, 0);
-        const doc = new jsPDF('p', 'in', 'letter');
+        const doc = new jsPDF('p', 'in', [13, 13]); // Page size set to 13 inches by 13 inches
 
         const labelWidth = 2.625;
         const labelHeight = 1;
         const labelsPerRow = 3;
-        const labelsPerColumn = 10;
+        const labelsPerColumn = 9; // Adjusted to 9 columns
+        const labelsPerPage = labelsPerRow * labelsPerColumn; // Total labels per page
 
-        const leftMargin = 0.5 / 2.54;
-        const rightMargin = 0.5 / 2.54;
-        const topMargin = 0.8 / 2.54;
-        const bottomMargin = 1.6 / 2.54;
-        const interColumnMargin = 4 / 2.54;
+        const leftMargin = 0.5;
+        const rightMargin = 0.5;
+        const topMargin = 0.8;
+        const bottomMargin = 1.6;
 
         const xSpacing = (doc.internal.pageSize.width - leftMargin - rightMargin - (labelsPerRow * labelWidth)) / (labelsPerRow - 1);
         const ySpacing = (doc.internal.pageSize.height - topMargin - bottomMargin - (labelsPerColumn * labelHeight)) / (labelsPerColumn - 1);
 
         let currentDate = new Date(startDate);
+
         const expirationMap = {
-            '7': { days: 7, months: 0, years: 0, text: '7-Days' },
-            '30': { days: 30, months: 0, years: 0, text: '30-Days' },
-            '180': { days: 0, months: 6, years: 0, text: '6-Months' },
-            '1095': { days: 0, months: 0, years: 3, text: '3-Years' }
+            '7': { days: 7, months: 0, years: 0, text: '7-Days', cellsPerBlock: 9 },
+            '30': { days: 30, months: 0, years: 0, text: '30-Days', cellsPerBlock: 3 },
+            '180': { days: 0, months: 6, years: 0, text: '6-Months', cellsPerBlock: 3 },
+            '1095': { days: 0, months: 0, years: 3, text: '3-Years', cellsPerBlock: 3 }
         };
 
-        const { days, months, years, text: expirationText } = expirationMap[expirationType] || { days: 0, months: 0, years: 0, text: '' };
+        const { days, months, years, text: expirationText, cellsPerBlock } = expirationMap[expirationType] || { days: 0, months: 0, years: 0, text: '', cellsPerBlock: 3 };
+
+        let rowCount = 0;
+        let labelCount = 0;
+        let labelsPrinted = 0;
+        let labelsForCurrentDate = 0;
 
         while (currentDate <= endDate) {
-            if (currentDate.getDate() > 1) {
+            // Add a new page if the number of labels exceeds the limit for the page
+            if (labelsPrinted % labelsPerPage === 0 && labelsPrinted > 0) {
                 doc.addPage();
+                rowCount = 0;
+                labelCount = 0;
+                labelsForCurrentDate = 0; // Reset for new page
             }
 
-            for (let row = 0; row < labelsPerColumn; row++) {
-                for (let col = 0; col < labelsPerRow; col++) {
-                    const x = leftMargin + col * (labelWidth + xSpacing) + (labelWidth / 2);
-                    const y = topMargin + row * (labelHeight + ySpacing) + (labelHeight / 2);
+            // Add label
+            const x = leftMargin + labelCount * (labelWidth + xSpacing);
+            const y = topMargin + rowCount * (labelHeight + ySpacing);
 
-                    const dispensedOn = formatDate(currentDate);
-                    const expirationDate = new Date(currentDate);
+            const dispensedOn = formatDate(currentDate);
+            const expirationDate = new Date(currentDate);
 
-                    if (days > 0) {
-                        expirationDate.setDate(currentDate.getDate() + days);
-                    } else if (months > 0) {
-                        expirationDate.setMonth(currentDate.getMonth() + months);
-                    } else if (years > 0) {
-                        expirationDate.setFullYear(currentDate.getFullYear() + years);
-                    }
-
-                    const expiresOn = formatDate(expirationDate);
-
-                    doc.text(`Dispensed ${dispensedOn}`, x, y, { align: 'center' });
-                    doc.text(`Exp (${expirationText}) ${expiresOn}`, x, y + 0.4, { align: 'center' });
-                }
+            if (days > 0) {
+                expirationDate.setDate(currentDate.getDate() + days);
+            } else if (months > 0) {
+                expirationDate.setMonth(currentDate.getMonth() + months);
+            } else if (years > 0) {
+                expirationDate.setFullYear(currentDate.getFullYear() + years);
             }
 
-            currentDate.setDate(currentDate.getDate() + 1);
+            const expiresOn = formatDate(expirationDate);
 
-            if (currentDate > endDate) break;
+            doc.text(`Dispensed ${dispensedOn}`, x + labelWidth / 2, y + labelHeight / 2 - 0.15, { align: 'center' });
+            doc.text(`Expires (${expirationText}) ${expiresOn}`, x + labelWidth / 2, y + labelHeight / 2 + 0.15, { align: 'center', fontSize: 12, fontStyle: 'bold' });
+
+            labelCount++;
+            labelsPrinted++;
+            labelsForCurrentDate++;
+
+            // Move to the next row or page
+            if (labelCount >= labelsPerRow) {
+                labelCount = 0;
+                rowCount++;
+            }
+
+            // Change date after 9 cells for '7-Days' or 3 cells for others
+            if (labelsForCurrentDate >= cellsPerBlock) {
+                labelsForCurrentDate = 0;
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
         }
 
         const pdfDataUrl = doc.output('datauristring');
